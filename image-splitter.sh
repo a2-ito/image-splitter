@@ -4,13 +4,14 @@ IFS=$'\n'
 IGNORE_LIST=ignore.lst
 SPLIT_RATE=50
 _image_parentparent_dir=""
+_image_output_dir=""
 ############################################################################################
 
 image_splitter() {
   _image_dir=$1
   _split_rate_left=`echo "scale=5; 100-${SPLIT_RATE}"|bc`
 
-  _dirname=`basename "${_image_dir}"`
+  _dirname=${_image_output_dir}`basename "${_image_dir}"`
   if [ -e "${_dirname}" ]; then
     echo "  "skip - "${_dirname}"
 		return
@@ -23,7 +24,7 @@ image_splitter() {
     _count=`expr ${_count} + 1`
     _height=`identify -format '%h' "${_image}"`
 		if [ -z ${_height} ]; then
-			echo "${dirname}" "${_image_filename}"
+			echo "${_dirname}" "${_image_filename}"
 			break
 		fi
     _width=`identify -format '%w' "${_image}"`
@@ -65,7 +66,9 @@ do
     #identify -format '%h' "${_image}"
     _height=`identify -format '%h' "${_image}"`
 		if [ -z ${_height} ]; then
-			echo "${dirname}" "${_image_filename}"
+      echo identify -format '%h' "${_image}"
+      identify -format '%h' "${_image}"
+			echo "${_dirname}" "${_image_filename}"
 			#break
 		fi
     _width=`identify -format '%w' "${_image}"`
